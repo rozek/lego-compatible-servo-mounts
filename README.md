@@ -2,6 +2,7 @@
 
 servo mounts with LEGO-compatible hole grids for simplified assembly
 
+> This is a work in progress - don't expect it to be finished before end of February 2022
 
 
 This set will soon also be available on Thingiverse
