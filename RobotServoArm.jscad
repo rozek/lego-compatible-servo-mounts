@@ -20,7 +20,7 @@ const ServoFlangeOffset     = 15.6                                       // dto.
 const ServoFlangeThickness  =  2.5 + Epsilon
 const ServoFlangeLength     =  5.0 + Epsilon
 const ServoScrewOffset      =  2.0
-const ServoHornThickness    =  1.5
+const ServoHornThickness    =  1.8
 const ServoHornStartWidth   =  6.2 /*  7.5 */ + 2*Epsilon
 const ServoHornEndWidth     =  4.2 /*  4.6 */ + 2*Epsilon
 const ServoHornLength       = 16.2 /* 18.0 */ + 2*Epsilon
@@ -28,6 +28,7 @@ const ServoHornAxisDiameter =  7.5, ServoHornAxisRadius = ServoHornAxisDiameter/
 const ServoHornAxisOffset   =  6.5            // more a guess than a measurement
 
 const ScrewDiameter = 2.0, ScrewRadius = ScrewDiameter/2
+const NutDiameter   = 6.0, NutRadius   = NutDiameter/2
 const NutThickness  = 2.0
 
 const Angle90  = 90  * Math.PI/180
@@ -56,13 +57,16 @@ const main = () => {
     rotateX(Angle90,
       subtract(
         union(
-          cylinder({ radius:ServoBodyWidth/2, height:Thickness }),
+          cylinder({
+            radius:ServoBodyWidth/2, height:2*Thickness,
+            center:[ 0,0,-Thickness/2 ]
+          }),
           cuboid({
             size:[ ServoBodyLength,ServoBodyWidth,Thickness ],
             center:[ ServoBodyLength/2,0,0 ]
           })
         ),
-        cylinder({ radius:ServoHornAxisRadius, height:Thickness + Epsilon })
+        cylinder({ radius:ServoHornAxisRadius, height:4*Thickness })
       )
     )
   )
@@ -74,7 +78,9 @@ const main = () => {
     translate([ 0,ServoHornThickness-0.5,ServoBodyWidth/2 ], rotateY( Angle270,Horn ))
   )
 
-  const middleArmLength = ServoBodyHeight + NutThickness + 2*Thickness + 3.0
+  const middleArmLength = (
+    ServoBodyHeight + Math.max(Thickness,NutThickness) + 3*Thickness + 3.0
+  )
 
   let middleArm = cuboid({
     size:[ Thickness,middleArmLength,ServoBodyWidth ],
@@ -97,13 +103,17 @@ const main = () => {
     rotateX(Angle90,
       subtract(
         union(
-          cylinder({ radius:ServoBodyWidth/2, height:Thickness }),
+          cylinder({
+            radius:ServoBodyWidth/2, height:2*Thickness,
+            center:[ 0,0,Thickness/2 ]
+          }),
           cuboid({
             size:[ ServoBodyLength,ServoBodyWidth,Thickness ],
             center:[ ServoBodyLength/2,0,0 ]
           }),
         ),
-        cylinder({ radius:BoreholeRadius+Epsilon, height:Thickness })
+        cylinder({ radius:BoreholeRadius+Epsilon, height:4*Thickness }),
+        cylinder({ radius:NutRadius+Epsilon, height:Thickness, center:[ 0,0,Thickness ] })
       )
     )
   )
