@@ -6,7 +6,7 @@ const { extrudeLinear }                        = require('@jscad/modeling').extr
 
 const Epsilon = 0.1                      // a small extra for imprecise printers
 
-const Thickness = 2.0
+const Thickness = 4.0                          // i.e., twice as thick as normal
 
 const BoreholeDiameter = 3.0, BoreholeRadius = BoreholeDiameter/2
 const BoreholeOffset   = 8.0
@@ -17,7 +17,7 @@ const StripeWidth  = 10.0
 const StripeLength = 80.0
 const CornerRadius = 2.0
 
-const ServoHornThickness    =  1.5
+const ServoHornThickness    =  1.8
 const ServoHornStartWidth   =  6.2 /*  7.5 */ + 2*Epsilon
 const ServoHornEndWidth     =  4.2 /*  4.6 */ + 2*Epsilon
 const ServoHornLength       = 16.2 /* 18.0 */ + 2*Epsilon
@@ -97,7 +97,7 @@ const main = () => {
     Horn, rotateZ( Angle90,Horn ), rotateZ( Angle180,Horn ), rotateZ( Angle270,Horn ),
     cylinder({ radius:ServoHornAxisRadius+Epsilon, height:Thickness })
   )
-  Cross = translate([ 0,0,1.0 ], Cross)
+  Cross = translate([ 0,0,Thickness-ServoHornThickness ], Cross)
 
   return subtract(Stripe, Cross)
 }
