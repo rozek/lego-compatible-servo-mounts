@@ -103,17 +103,13 @@ const main = () => {
     rotateX(Angle90,
       subtract(
         union(
-          cylinder({
-            radius:ServoBodyWidth/2, height:2*Thickness,
-            center:[ 0,0,Thickness/2 ]
-          }),
+          cylinder({ radius:ServoBodyWidth/2, height:Thickness }),
           cuboid({
             size:[ ServoBodyLength,ServoBodyWidth,Thickness ],
             center:[ ServoBodyLength/2,0,0 ]
           }),
         ),
-        cylinder({ radius:BoreholeRadius+Epsilon, height:4*Thickness }),
-        cylinder({ radius:NutRadius+Epsilon, height:Thickness, center:[ 0,0,Thickness ] })
+        cylinder({ radius:BoreholeRadius+Epsilon, height:4*Thickness })
       )
     )
   )
