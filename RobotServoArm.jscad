@@ -25,11 +25,10 @@ const ServoHornStartWidth   =  6.2 /*  7.5 */ + 2*Epsilon
 const ServoHornEndWidth     =  4.2 /*  4.6 */ + 2*Epsilon
 const ServoHornLength       = 16.2 /* 18.0 */ + 2*Epsilon
 const ServoHornAxisDiameter =  7.5, ServoHornAxisRadius = ServoHornAxisDiameter/2 + Epsilon
-const ServoHornAxisOffset   =  6.5            // more a guess than a measurement
 
 const ScrewDiameter = 2.0, ScrewRadius = ScrewDiameter/2
 const NutDiameter   = 6.0, NutRadius   = NutDiameter/2
-const NutThickness  = 2.0
+const NutThickness  = 3.0
 
 const Angle90  = 90  * Math.PI/180
 const Angle180 = 180 * Math.PI/180
@@ -37,7 +36,7 @@ const Angle270 = 270 * Math.PI/180
 
 const main = () => {
   let Horn = union(
-    extrudeLinear({ height:ServoHornThickness },
+    extrudeLinear({ height:ServoHornThickness+2*Epsilon },
       polygon({
         points:[
           [ServoHornStartWidth/2,0],
@@ -47,8 +46,8 @@ const main = () => {
         ]
       })
     ), cylinder({
-      radius:ServoHornEndWidth/2, height:ServoHornThickness,
-      center:[ 0,ServoHornLength-ServoHornEndWidth/2,ServoHornThickness/2 ]
+      radius:ServoHornEndWidth/2, height:ServoHornThickness+2*Epsilon,
+      center:[ 0,ServoHornLength-ServoHornEndWidth/2,ServoHornThickness/2+Epsilon ]
     })
   )
   Horn = rotateX( Angle90,Horn )
@@ -66,40 +65,40 @@ const main = () => {
             center:[ ServoBodyLength/2,0,0 ]
           })
         ),
-        cylinder({ radius:ServoHornAxisRadius, height:4*Thickness })
+        cylinder({ radius:ServoHornAxisRadius+Epsilon, height:4*Thickness })
       )
     )
   )
   leftArm = subtract(
     leftArm,
-    translate([ 0,ServoHornThickness-0.5,ServoBodyWidth/2 ], Horn ),
-    translate([ 0,ServoHornThickness-0.5,ServoBodyWidth/2 ], rotateY( Angle90,Horn )),
-    translate([ 0,ServoHornThickness-0.5,ServoBodyWidth/2 ], rotateY( Angle180,Horn )),
-    translate([ 0,ServoHornThickness-0.5,ServoBodyWidth/2 ], rotateY( Angle270,Horn ))
+    translate([ 0,ServoHornThickness,ServoBodyWidth/2 ], Horn ),
+    translate([ 0,ServoHornThickness,ServoBodyWidth/2 ], rotateY( Angle90,Horn )),
+    translate([ 0,ServoHornThickness,ServoBodyWidth/2 ], rotateY( Angle180,Horn )),
+    translate([ 0,ServoHornThickness,ServoBodyWidth/2 ], rotateY( Angle270,Horn ))
   )
 
-  const middleArmLength = (
-    ServoBodyHeight + Math.max(Thickness,NutThickness) + 3*Thickness + 3.0
-  )
+  const middleArmLength = ServoBodyHeight + 4*Thickness + NutThickness + 3*Epsilon
 
   let middleArm = cuboid({
     size:[ Thickness,middleArmLength,ServoBodyWidth ],
     center:[ -Thickness/2+ServoBodyLength,middleArmLength/2,ServoBodyWidth/2 ]
   })
     let BoreholeCount = Math.floor((middleArmLength-2*Thickness)/BoreholeOffset)
+    let firstOffset   = (middleArmLength-(BoreholeCount-1)*BoreholeOffset)/2
 
     for (let i = 0; i < BoreholeCount; i++) {
       middleArm = subtract(
-        middleArm, translate(
-          [ -Thickness/2+ServoBodyLength,(i+0.5)*BoreholeOffset+Thickness,ServoBodyWidth/2 ],
+        middleArm,
+        translate(
+          [ -Thickness/2+ServoBodyLength,firstOffset+i*BoreholeOffset,ServoBodyWidth/2 ],
           rotateY(
             Angle90, cylinder({ radius:BoreholeRadius+Epsilon, height:Thickness })
           )
-        )
+        ),
       )
     }
 
-  let rightArm = translate([ 0,middleArmLength,ServoBodyWidth/2 ],
+  let rightArm = translate([ 0,middleArmLength-Thickness/2,ServoBodyWidth/2 ],
     rotateX(Angle90,
       subtract(
         union(
@@ -109,7 +108,7 @@ const main = () => {
             center:[ ServoBodyLength/2,0,0 ]
           }),
         ),
-        cylinder({ radius:BoreholeRadius+Epsilon, height:4*Thickness })
+        cylinder({ radius:BoreholeRadius+Epsilon, height:2*Thickness })
       )
     )
   )
