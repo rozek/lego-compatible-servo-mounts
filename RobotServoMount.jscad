@@ -20,7 +20,7 @@ const ServoFlangeOffset    = 15.6                                        // dto.
 const ServoFlangeThickness =  2.5 + Epsilon
 const ServoFlangeLength    =  5.0 + Epsilon
 const ServoScrewOffset     =  2.0
-const ServoHornAxisOffset  =  6.5             // more a guess than a measurement
+const ServoHornAxisOffset  =  6.0             // more a guess than a measurement
 
 const ScrewDiameter = 2.0, ScrewRadius = ScrewDiameter/2
 const NutThickness  = 3.0
